@@ -29,17 +29,24 @@ public class SpringWebApplication {
         MySpringConfig mySpringConfig = run.getBean(MySpringConfig.class);
         System.out.println(mySpringConfig);
 
-        PetBo petBo = run.getBean("pet",PetBo.class);
-        UserBo userBo = run.getBean("user",UserBo.class);
+//        PetBo petBo = run.getBean("pet",PetBo.class);
+//        UserBo userBo = run.getBean("user",UserBo.class);
+//
+//        System.out.println(petBo==userBo.getPetBo());
 
-        System.out.println(petBo==userBo.getPetBo());
+        //2、查看容器里面的组件
+        String[] names = run.getBeanDefinitionNames();
+        for (String name : names) {
+            System.out.println(name);
+
+        }
     }
 
     @RequestMapping
     @ResponseBody
-    public Map index(){
-        Map<String,String> map = new HashMap<>();
-        map.put("jascola","jascola");
+    public Map index() {
+        Map<String, String> map = new HashMap<>();
+        map.put("jascola", "jascola");
         return map;
     }
 
