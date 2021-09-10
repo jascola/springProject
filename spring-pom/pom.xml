@@ -30,13 +30,8 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
+    <modules>
+        <module>../spring-business</module>
+        <module>../spring-web</module>
+    </modules>
 </project>

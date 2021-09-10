@@ -6,7 +6,7 @@
         <groupId>com.jascola</groupId>
         <artifactId>spring</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath>../spring-pom/pom.xml</relativePath> <!-- lookup parent from repository -->
     </parent>
     <packaging>jar</packaging>
     <artifactId>spring-business</artifactId>
