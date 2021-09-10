@@ -3,6 +3,7 @@ package com.jascola.spring;
 import com.jascola.spring.business.bo.PetBo;
 import com.jascola.spring.business.bo.UserBo;
 import com.jascola.spring.business.config.MySpringConfig;
+import com.jascola.spring.business.property.MainSettingProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -40,6 +41,9 @@ public class SpringWebApplication {
             System.out.println(name);
 
         }
+        MainSettingProperties settingProperties = run.getBean("com.jascola-com.jascola.spring.business.property.MainSettingProperties",MainSettingProperties.class);
+
+        System.out.println(settingProperties.toString());
     }
 
     @RequestMapping
