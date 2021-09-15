@@ -1,15 +1,17 @@
 package com.jascola.spring;
 
-import com.jascola.spring.business.bo.PetBo;
-import com.jascola.spring.business.bo.UserBo;
 import com.jascola.spring.business.config.MySpringConfig;
 import com.jascola.spring.business.property.MainSettingProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.web.servlet.filter.OrderedHiddenHttpMethodFilter;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +20,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/")
 
-public class SpringWebApplication {
+public class SpringWebApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(SpringWebApplication.class, args);
@@ -54,4 +56,18 @@ public class SpringWebApplication {
         return map;
     }
 
+
+    /**
+     * 自定义bean
+     * ConditionalOnMissingBean(HiddenHttpMethodFilter.class)
+     * WebMvcAutoConfiguration中的OrderedHiddenHttpMethodFilter 不生效
+     * */
+    @Bean
+    @ConditionalOnProperty(prefix = "spring.mvc.hiddenmethod.filter", name = "enabled",matchIfMissing = true)
+    public OrderedHiddenHttpMethodFilter hiddenHttpMethodFilter() {
+        OrderedHiddenHttpMethodFilter filter = new OrderedHiddenHttpMethodFilter();
+        //自定义表单传参
+        filter.setMethodParam("caonima");
+        return filter;
+    }
 }
