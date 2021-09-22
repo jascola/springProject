@@ -1,5 +1,6 @@
 package com.jascola.spring;
 
+import com.jascola.spring.business.bo.PetBo;
 import com.jascola.spring.business.config.MySpringConfig;
 import com.jascola.spring.business.property.MainSettingProperties;
 import org.springframework.boot.SpringApplication;
@@ -8,11 +9,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.filter.OrderedHiddenHttpMethodFilter;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,5 +72,23 @@ public class SpringWebApplication implements WebMvcConfigurer {
         //自定义表单传参
         filter.setMethodParam("caonima");
         return filter;
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new Converter<String, PetBo>() {
+            @Override
+            public PetBo convert(String source) {
+                if(!StringUtils.isEmpty(source)){
+                    String[] strs = source.split(",");
+                    PetBo petBo = new PetBo();
+                    petBo.setAge(Long.valueOf(strs[1]) );
+                    petBo.setName(strs[0]);
+                    return petBo;
+                }
+                return null;
+            }
+
+        });
     }
 }
