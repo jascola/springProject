@@ -10,13 +10,18 @@ import org.springframework.boot.web.servlet.filter.OrderedHiddenHttpMethodFilter
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.text.ParseException;
+import java.time.Month;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @SpringBootApplication
@@ -74,6 +79,11 @@ public class SpringWebApplication implements WebMvcConfigurer {
         return filter;
     }
 
+    /**
+     * 自定义参数类型转换器
+     * 实现Converter接口，并通过FormatterRegistry 注册到 spring中
+     * spring解析参数时从类型转换器集合中找匹配的，  《Class<S> sourceType, Class<T> targetType》为key。
+     * */
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new Converter<String, PetBo>() {
@@ -89,6 +99,26 @@ public class SpringWebApplication implements WebMvcConfigurer {
                 return null;
             }
 
+        });
+
+        /*同key  《Class<S> sourceType, Class<T> targetType》 的 优先级Formatter>Converter */
+        registry.addFormatter(new Formatter<PetBo>() {
+            @Override
+            public PetBo parse(String text, Locale locale) throws ParseException {
+                if(!StringUtils.isEmpty(text)){
+                    String[] strs = text.split("-");
+                    PetBo petBo = new PetBo();
+                    petBo.setAge(Long.valueOf(strs[1]) );
+                    petBo.setName(strs[0]);
+                    return petBo;
+                }
+                return null;
+            }
+
+            @Override
+            public String print(PetBo object, Locale locale) {
+                return object.getName()+"--------"+object.getAge();
+            }
         });
     }
 }

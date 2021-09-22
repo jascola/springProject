@@ -3,6 +3,9 @@ package com.jascola.spring.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 测试restful风格
+ * */
 @Controller
 @RequestMapping("/")
 public class UserController {
