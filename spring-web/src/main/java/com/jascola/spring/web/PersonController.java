@@ -21,5 +21,10 @@ public class PersonController {
     }
 
 
+    @PostMapping("/person")
+    @ResponseBody
+    public UserBo postPerson(UserBo userBo){
+        return userBo;
+    }
 
 }

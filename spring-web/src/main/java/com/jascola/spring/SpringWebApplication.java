@@ -1,6 +1,7 @@
 package com.jascola.spring;
 
 import com.jascola.spring.business.bo.PetBo;
+import com.jascola.spring.business.bo.UserBo;
 import com.jascola.spring.business.config.MySpringConfig;
 import com.jascola.spring.business.property.MainSettingProperties;
 import org.springframework.boot.SpringApplication;
@@ -12,17 +13,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.HttpInputMessage;
+import org.springframework.http.HttpOutputMessage;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.time.Month;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootApplication
 @Controller
@@ -120,5 +127,48 @@ public class SpringWebApplication implements WebMvcConfigurer {
                 return object.getName()+"--------"+object.getAge();
             }
         });
+    }
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+
+        converters.add(new MyOwnHttpMessageConvert());
+
+    }
+
+    public static class MyOwnHttpMessageConvert implements HttpMessageConverter<UserBo> {
+
+        @Override
+        public boolean canRead(Class<?> clazz, MediaType mediaType) {
+            return false;
+        }
+        /**
+         * 是否可以写，以及什么条件下可以写
+         */
+        @Override
+        public boolean canWrite(Class<?> clazz, MediaType mediaType) {
+            return true;
+        }
+        /**
+         * 服务端能提供哪些协议
+         */
+        @Override
+        public List<MediaType> getSupportedMediaTypes() {
+          return  MediaType.parseMediaTypes("application/good--job");
+        }
+
+        @Override
+        public UserBo read(Class<? extends UserBo> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+            return null;
+        }
+
+        @Override
+        public void write(UserBo userBo, MediaType contentType, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+
+            String s = userBo.getName() + "----------" + userBo.getAge();
+
+            OutputStream outputStream = outputMessage.getBody();
+            outputStream.write(s.getBytes(StandardCharsets.UTF_8));
+        }
     }
 }
