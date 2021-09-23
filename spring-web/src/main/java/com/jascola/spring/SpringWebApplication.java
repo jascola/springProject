@@ -90,6 +90,10 @@ public class SpringWebApplication implements WebMvcConfigurer {
      * 自定义参数类型转换器
      * 实现Converter接口，并通过FormatterRegistry 注册到 spring中
      * spring解析参数时从类型转换器集合中找匹配的，  《Class<S> sourceType, Class<T> targetType》为key。
+     *
+     *
+     * DataBinder binder = binderFactory.createBinder(request, null, attributeName);
+     * ConversionService conversionService = binder.getConversionService();
      * */
     @Override
     public void addFormatters(FormatterRegistry registry) {
@@ -138,12 +142,18 @@ public class SpringWebApplication implements WebMvcConfigurer {
 
     public static class MyOwnHttpMessageConvert implements HttpMessageConverter<UserBo> {
 
+        /**
+         * 针对@RequestBody注解 会使用 RequestResponseBodyMethodProcessor
+         *  参数解析会使用HttpMessageConverters
+         * */
+
         @Override
         public boolean canRead(Class<?> clazz, MediaType mediaType) {
             return false;
         }
         /**
          * 是否可以写，以及什么条件下可以写
+         * mediaType判空，*\*都放过，为true
          */
         @Override
         public boolean canWrite(Class<?> clazz, MediaType mediaType) {
