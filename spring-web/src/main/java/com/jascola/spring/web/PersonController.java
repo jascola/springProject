@@ -27,4 +27,8 @@ public class PersonController {
         return userBo;
     }
 
+    @GetMapping("/person")
+    public String getPerson(UserBo userBo){
+        return "index.ftl";
+    }
 }
