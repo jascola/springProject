@@ -1,5 +1,6 @@
 package com.jascola.spring.web;
 
+import com.jascola.spring.business.bo.UserBo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +24,15 @@ public class UserController {
         return "put";
     }
 
-    @GetMapping("/user")
-    @ResponseBody
-    public String getUser(){
-        return "get";
-    }
-
     @PostMapping("/user")
     @ResponseBody
     public String postUser(){
         return "post";
+    }
+
+    @GetMapping("/user")
+    public String indexFtl(UserBo userBo){
+        return "index.ftl";
     }
 
 }

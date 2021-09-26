@@ -4,6 +4,7 @@ import com.jascola.spring.business.bo.PetBo;
 import com.jascola.spring.business.bo.UserBo;
 import com.jascola.spring.business.config.MySpringConfig;
 import com.jascola.spring.business.property.MainSettingProperties;
+import com.jascola.spring.interceptor.PersonInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -26,12 +27,14 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -73,9 +76,10 @@ public class SpringWebApplication implements WebMvcConfigurer {
 
     @RequestMapping
     @ResponseBody
-    public Map index() {
-        Map<String, String> map = new HashMap<>();
-        map.put("jascola", "jascola");
+    public Map index(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("jascola", request.getAttribute("jascola"));
+
         return map;
     }
 
@@ -210,5 +214,15 @@ public class SpringWebApplication implements WebMvcConfigurer {
 //        configurer.setDefaultEncoding("UTF-8");
 //        return configurer;
 //    }
+
+    /**
+     * 注册拦截器到组建中
+     * */
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new PersonInterceptor()).addPathPatterns("/person/**")
+//                .excludePathPatterns("")
+        ;
+
+    }
 
 }
