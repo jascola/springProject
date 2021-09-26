@@ -191,18 +191,24 @@ public class SpringWebApplication implements WebMvcConfigurer {
     }
 
 
+    /**
+     * 注册视图解析器
+     * */
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.freeMarker();
     }
     // Configure FreeMarker...
 
-    @Bean
-    public FreeMarkerConfigurer freeMarkerConfigurer() {
-        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
-        configurer.setTemplateLoaderPaths("classpath:/freemarker/");
-        configurer.setDefaultEncoding("UTF-8");
-        return configurer;
-    }
+    /**
+     * Freemarker配置，可以自动装配。
+     * */
+//    @Bean
+//    public FreeMarkerConfigurer freeMarkerConfigurer() {
+//        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
+//        configurer.setTemplateLoaderPaths("classpath:/freemarker/");
+//        configurer.setDefaultEncoding("UTF-8");
+//        return configurer;
+//    }
 
 }
