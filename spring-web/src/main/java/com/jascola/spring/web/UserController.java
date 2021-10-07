@@ -3,6 +3,10 @@ package com.jascola.spring.web;
 import com.jascola.spring.business.bo.UserBo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 测试restful风格
@@ -31,8 +35,10 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String indexFtl(UserBo userBo){
-        return "index.ftl";
+    public ModelAndView indexFtl(UserBo userBo){
+        Map<String, String> model = new HashMap<>();
+        model.put("name","jascola");
+        return new ModelAndView("index.ftl",model);
     }
 
 }

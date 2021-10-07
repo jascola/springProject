@@ -219,7 +219,7 @@ public class SpringWebApplication implements WebMvcConfigurer {
      * 注册拦截器到组建中
      * */
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new PersonInterceptor()).addPathPatterns("/person/**")
+//        registry.addInterceptor(new PersonInterceptor()).addPathPatterns("/person/**")
 //                .excludePathPatterns("")
         ;
 

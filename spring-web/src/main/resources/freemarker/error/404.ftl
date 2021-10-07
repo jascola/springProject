@@ -1,5 +1,5 @@
 <html>
 <body>
-    <h1>${name}</h1>
+    <h1>${status}</h1>
 </body>
 </html>

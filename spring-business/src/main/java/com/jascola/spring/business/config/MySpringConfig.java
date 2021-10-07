@@ -30,7 +30,7 @@ import org.springframework.context.annotation.*;
 public class MySpringConfig {
 
     @Bean("user")
-    //以参数形式传入的bean，参数名称要和bean名称一致
+    //以参数形式传入的bean，会从容器取
     public UserBo userBo(PetBo pet){
 
         UserBo userBo = new UserBo();
