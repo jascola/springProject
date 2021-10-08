@@ -5,10 +5,13 @@ import com.jascola.spring.business.bo.UserBo;
 import com.jascola.spring.business.config.MySpringConfig;
 import com.jascola.spring.business.property.MainSettingProperties;
 import com.jascola.spring.interceptor.PersonInterceptor;
+import com.jascola.spring.servlet.MyOwnFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.filter.OrderedHiddenHttpMethodFilter;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +37,7 @@ import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,6 +46,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.*;
 
+@ServletComponentScan(basePackages = "com.jascola.spring.servlet")
 @SpringBootApplication
 @Controller
 @RequestMapping("/")
@@ -223,6 +228,19 @@ public class SpringWebApplication implements WebMvcConfigurer {
 //                .excludePathPatterns("")
         ;
 
+    }
+
+
+    /**
+     * 使用RegistrationBean方式
+     * */
+    @Bean
+    public FilterRegistrationBean<Filter> filterRegistrationBean(){
+        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new MyOwnFilter());
+//        filterRegistrationBean.setUrlPatterns(Arrays.asList("/zz","/zz2"));
+        filterRegistrationBean.setServletNames(Collections.singletonList("myOwnServlet"));
+        return  filterRegistrationBean;
     }
 
 }

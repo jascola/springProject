@@ -1,6 +1,7 @@
 package com.jascola.spring.web;
 
 import com.jascola.spring.business.bo.UserBo;
+import com.jascola.spring.exceptionhandler.MyOwnException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,13 +20,15 @@ public class UserController {
     @DeleteMapping("/user")
     @ResponseBody
     public String deleteUser(){
+        String str = null;
+        str.toString();
         return "delete";
     }
 
     @PutMapping("/user")
     @ResponseBody
     public String putUser(){
-        return "put";
+        throw new MyOwnException();
     }
 
     @PostMapping("/user")
@@ -38,7 +41,7 @@ public class UserController {
     public ModelAndView indexFtl(UserBo userBo){
         Map<String, String> model = new HashMap<>();
         model.put("name","jascola");
-        return new ModelAndView("index.ftl",model);
+        return new ModelAndView("index",model);
     }
 
 }
