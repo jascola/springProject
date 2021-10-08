@@ -16,7 +16,7 @@ import org.springframework.context.annotation.*;
 //Full:外部无论对配置类中的这个组件注册方法调用多少次获取的都是之前注册容器中的单实例对象
 //如果@Configuration(proxyBeanMethods = true)代理对象调用方法。SpringBoot总会检查这个组件是否在容器中有。
 
-@EnableConfigurationProperties(MainSettingProperties.class)
+@EnableConfigurationProperties({MainSettingProperties.class})
 @PropertySource(value = "classpath:main-setting.properties")
 /**
  * 容器中导入bean的方式之一

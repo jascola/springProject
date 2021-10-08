@@ -1,5 +1,7 @@
 package com.jascola.spring;
 
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
 import com.jascola.spring.business.bo.PetBo;
 import com.jascola.spring.business.bo.UserBo;
 import com.jascola.spring.business.config.MySpringConfig;
@@ -12,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.filter.OrderedHiddenHttpMethodFilter;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -243,4 +246,26 @@ public class SpringWebApplication implements WebMvcConfigurer {
         return  filterRegistrationBean;
     }
 
+    /**
+     * 使用Druid的内置监控页面
+     * */
+    @Bean
+    public ServletRegistrationBean<StatViewServlet> servletRegistrationBean(){
+        ServletRegistrationBean<StatViewServlet> servletRegistrationBean = new ServletRegistrationBean<>();
+        servletRegistrationBean.setServlet(new StatViewServlet());
+        servletRegistrationBean.setUrlMappings(Collections.singletonList("/druid/*"));
+        return servletRegistrationBean;
+    }
+
+    /**
+     * Web和Spring关联监控
+     */
+    @Bean
+    public FilterRegistrationBean<WebStatFilter> filterRegistraWebStatFilterBean(){
+        FilterRegistrationBean<WebStatFilter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new WebStatFilter());
+        filterRegistrationBean.addInitParameter("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        filterRegistrationBean.setUrlPatterns(Collections.singletonList("/*"));
+        return filterRegistrationBean;
+    }
 }
