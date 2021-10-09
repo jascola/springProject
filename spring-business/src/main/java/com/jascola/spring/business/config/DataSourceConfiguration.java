@@ -2,6 +2,10 @@ package com.jascola.spring.business.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.mysql.fabric.xmlrpc.base.Param;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +35,21 @@ public class DataSourceConfiguration {
         dataSource.setFilters("stat,wall");
         return dataSource;
     }
+
+    /**
+     * mybatis分页拦截器配置
+     * 添加一个MybatisPlusInterceptor bean，在这个拦截器里配置 分页拦截器
+     * */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor(){
+
+        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+        PaginationInnerInterceptor paginationInterceptor = new PaginationInnerInterceptor();
+        mybatisPlusInterceptor.addInnerInterceptor(paginationInterceptor);
+
+        return mybatisPlusInterceptor;
+    }
+
 
 
 

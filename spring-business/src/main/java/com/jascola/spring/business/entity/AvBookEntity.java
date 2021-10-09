@@ -1,5 +1,8 @@
 package com.jascola.spring.business.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("t_av_book")
 public class AvBookEntity {
 
     private Long id;

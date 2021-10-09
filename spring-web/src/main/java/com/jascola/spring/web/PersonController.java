@@ -1,6 +1,8 @@
 package com.jascola.spring.web;
 
-import com.jascola.spring.business.biz.ResourceAvBookBiz;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jascola.spring.business.biz.ResourceAvBookService;
+import com.jascola.spring.business.biz.impl.ResourceAvBookBiz;
 import com.jascola.spring.business.bo.UserBo;
 import com.jascola.spring.business.entity.AvBookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class PersonController {
 
 
     @Autowired
-    private ResourceAvBookBiz resourceAvBookBiz;
+    private ResourceAvBookService resourceAvBookService;
 
     @DeleteMapping("/person")
     @ResponseBody
@@ -34,8 +36,11 @@ public class PersonController {
 
     @GetMapping("/person")
     @ResponseBody
-    public AvBookEntity getPerson(Long id){
-        return resourceAvBookBiz.getAvBookEntityById(id);
+    public Page<AvBookEntity> getPerson(Long id){
+        Page<AvBookEntity> page = new Page<>();
+        page.setCountId("1");
+        page.setSize(100L);
+        return resourceAvBookService.page(page,null);
     }
 
 }
