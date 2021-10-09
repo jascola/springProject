@@ -4,23 +4,23 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-public class JdkproxyClass {
+public class JdkproxyMainClass {
 
     private final static Class[] list = {JdkProxyTest.class};
 
     public void proxy(){
 
         //ClassLoader,要代理的类的接口，代理类的实例
-        JdkProxyTest test =  (JdkProxyTest) Proxy.newProxyInstance(JdkproxyClass.class.getClassLoader(),list, new JdkproxyImpl(new JdkProxyTestImpl()));
+        JdkProxyTest test =  (JdkProxyTest) Proxy.newProxyInstance(JdkproxyMainClass.class.getClassLoader(),list, new JdkproxyHandler(new JdkProxyTestImpl()));
 
         test.sayGood();
     }
 
-    static class JdkproxyImpl implements InvocationHandler{
+    static class JdkproxyHandler implements InvocationHandler{
 
         private final Object obj;
 
-        JdkproxyImpl(Object obj){
+        JdkproxyHandler(Object obj){
             this.obj = obj;
         }
 
@@ -40,7 +40,7 @@ public class JdkproxyClass {
     }
 
     public static void main(String[] args) {
-        JdkproxyClass jdkproxyClass = new JdkproxyClass();
+        JdkproxyMainClass jdkproxyClass = new JdkproxyMainClass();
         jdkproxyClass.proxy();
     }
 }
